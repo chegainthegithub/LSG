@@ -1,9 +1,15 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <cmath>
 using namespace std;
 
 
+
+//problems:const size of field sucks
+//how to avoid matrix
+//saving positions
+//inheiritation?
 struct statistics
 {
     int eaten = 0;
@@ -19,6 +25,21 @@ struct statistics
     {
         cout << "eaten == " << eaten<<endl;
         cout << "moves made == " << movesmade << endl;
+    }
+};
+
+struct enemy
+{
+    char icon = '%';
+    int x = 24;
+    int y = 24;
+    int distance (int a,int b)
+    {
+        return(sqrt((x-a)^2+(y-b)^2));
+    }
+    int nextcandie(int *candies) // array of adresses of candies
+    {
+        //searching for the next candie to move to
     }
 };
 
@@ -82,10 +103,6 @@ struct character
         local = 0;
         return local2;
     }
-};
-struct ghost
-{
-
 };
 
 
