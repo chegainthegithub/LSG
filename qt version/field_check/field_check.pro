@@ -8,3 +8,9 @@ SOURCES += main.cpp
 include(deployment.pri)
 qtcAddDeployment()
 
+HEADERS += \
+    unitstats.h \
+    character.h \
+    gamestatistics.h \
+    enemy.h
+
