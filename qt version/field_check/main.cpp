@@ -10,11 +10,16 @@ using namespace std;
 //how to avoid matrix
 //saving positions
 //inheiritation?
-struct statistics
+class statistics
 {
-    int eaten = 0;
-    int movesmade = 0;
-
+public:
+	int eaten;
+	int movesmade;
+	statistics()
+	{
+    eaten = 0;
+    movesmade = 0;
+	}
     void UpdateStats(int local)
     {
         if (local)
@@ -28,11 +33,17 @@ struct statistics
     }
 };
 
-struct enemy
+class enemy
 {
+	char icon;
+	int x;
+	int y;
+	enemy()
+	{
     char icon = '%';
     int x = 24;
     int y = 24;
+	}
     int distance (int a,int b)
     {
         return(sqrt((x-a)^2+(y-b)^2));
@@ -43,12 +54,20 @@ struct enemy
     }
 };
 
-struct character
+class character
 {
+	public:
+	char icon;
+	int x;
+	int y;
+	int local;
+	character()
+	{
     char icon = '@';
     int x = 1;
     int y = 1;
     int local = 0;
+	}
     int down(char field[25][25])
     {
         if (field[x+1][y]=='*')
@@ -111,8 +130,8 @@ void gamebody()
 int candies;
 cout << "input amount of candies: "<< endl;
 cin >> candies;
-character player;
-statistics counter;
+character player();
+statistics counter();
 char field[25][25] = {' '};
 field[1][1] = '@';
 for(int i = 0;i<candies;i++)
@@ -146,13 +165,13 @@ while (true)
     int move;
     cin >> move;
     if (move == 8)
-        player.up(field);
+        player().up(field);
     if (move == 2)
-        player.down(field);
+        player().down(field);
     if (move == 4)
-        player.left(field);
+        player().left(field);
     if (move == 6)
-        player.right(field);
+        player().right(field);
     system("cls");
     for (int i =0;i<25;i++)
     {
@@ -162,13 +181,13 @@ while (true)
         }
         cout<<endl;
     }
-    counter.UpdateStats(player.waseaten());
-    counter.show();
-    if (candies == counter.eaten)
+    counter().UpdateStats(player().waseaten());
+    counter().show();
+    if (candies == counter().eaten)
     {
         system("cls");
         cout << "             YOU ARE VICTORIOUS!!!"<<endl;
-        cout << "       you ate all the " << candies << " candies in "<<counter.movesmade<<" moves!"<<endl;
+        cout << "       you ate all the " << candies << " candies in "<<counter().movesmade<<" moves!"<<endl;
         cout << "             wanna another game? "<<endl;
         cout << "                   ";
         string answer;
