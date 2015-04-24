@@ -2,6 +2,10 @@
 #include <cstdlib>
 #include <string>
 #include <cmath>
+#include "UnitStats.h"
+#include "gamestatistics.h"
+#include "character.h"
+#include "enemy.h"
 using namespace std;
 
 
@@ -10,119 +14,10 @@ using namespace std;
 //how to avoid matrix
 //saving positions
 //inheiritation?
-class statistics
-{
-public:
-	int eaten;
-	int movesmade;
-	statistics()
-	{
-    eaten = 0;
-    movesmade = 0;
-	}
-    void UpdateStats(int local)
-    {
-        if (local)
-            eaten++;
-        movesmade++;
-    }
-    void show()
-    {
-        cout << "eaten == " << eaten<<endl;
-        cout << "moves made == " << movesmade << endl;
-    }
-};
 
-class enemy
-{
-	char icon;
-	int x;
-	int y;
-	enemy()
-	{
-    char icon = '%';
-    int x = 24;
-    int y = 24;
-	}
-    int distance (int a,int b)
-    {
-        return(sqrt((x-a)^2+(y-b)^2));
-    }
-    int nextcandie(int *candies) // array of adresses of candies
-    {
-        //searching for the next candie to move to
-    }
-};
 
-class character
-{
-	public:
-	char icon;
-	int x;
-	int y;
-	int local;
-	character()
-	{
-    char icon = '@';
-    int x = 1;
-    int y = 1;
-    int local = 0;
-	}
-    int down(char field[25][25])
-    {
-        if (field[x+1][y]=='*')
-            local = 1;
-        if (field[x+1][y] != '#')
-        {
-        field[x+1][y] = '@';
-        field[x][y] = ' ';
-        x++;
-        }
-        return local;
-    }
-    int up(char field[25][25])
-    {
-        if (field[x-1][y]=='*')
-            local = 1;
-        if (field[x-1][y]!='#')
-        {
-        field[x-1][y] = '@';
-        field[x][y] = ' ';
-        x--;
-        }
-        return local;
-    }
-    int left(char field[25][25])
-    {
-        if (field[x][y-1]=='*')
-            local = 1;
-        if (field[x][y-1]!='#')
-        {
-        field[x][y-1] = '@';
-        field[x][y] = ' ';
-        y--;
-        }
-        return local;
-    }
-    int right(char field[25][25])
-    {
-        if (field[x][y+1]=='*')
-            local = 1;
-        if (field[x][y+1]!='#')
-        {
-        field[x][y+1] = '@';
-        field[x][y] = ' ';
-        y++;
-        }
-        return local;
-    }
-    int waseaten()
-    {
-        int local2 = local;
-        local = 0;
-        return local2;
-    }
-};
+
+
 
 
 void gamebody()
@@ -130,10 +25,12 @@ void gamebody()
 int candies;
 cout << "input amount of candies: "<< endl;
 cin >> candies;
-character player();
-statistics counter();
+Character player(2,1,'@',1,1);
+Character:Enemy enemy1(2,1,'!',20,20);
+GameStatistics counter;
 char field[25][25] = {' '};
-field[1][1] = '@';
+field[player.element.x][player.element.y] = player.element.icon;
+field[enemy1.element.x][enemy1.element.y] = enemy1.element.icon;
 for(int i = 0;i<candies;i++)
 {
    int x = rand() % 24;
@@ -165,13 +62,17 @@ while (true)
     int move;
     cin >> move;
     if (move == 8)
-        player().up(field);
+        player.up(field);
     if (move == 2)
-        player().down(field);
+        player.down(field);
     if (move == 4)
-        player().left(field);
+        player.left(field);
     if (move == 6)
-        player().right(field);
+        player.right(field);
+
+
+
+
     system("cls");
     for (int i =0;i<25;i++)
     {
@@ -181,13 +82,13 @@ while (true)
         }
         cout<<endl;
     }
-    counter().UpdateStats(player().waseaten());
-    counter().show();
-    if (candies == counter().eaten)
+    counter.UpdateStats(player.waseaten());
+    counter.show();
+    if (candies == counter.element.eaten)
     {
         system("cls");
         cout << "             YOU ARE VICTORIOUS!!!"<<endl;
-        cout << "       you ate all the " << candies << " candies in "<<counter().movesmade<<" moves!"<<endl;
+        cout << "       you ate all the " << candies << " candies in "<<counter.element.movesmade<<" moves!"<<endl;
         cout << "             wanna another game? "<<endl;
         cout << "                   ";
         string answer;
